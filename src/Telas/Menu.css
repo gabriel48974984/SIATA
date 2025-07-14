@@ -1,0 +1,70 @@
+section{
+    background: #d9d9d9;
+    padding: 5px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 294px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+#botao{
+    background-color: #db0909;
+    width: 133px;
+    height: 23px;
+    color: #fff;
+}
+h2{
+    color: #fff;
+}
+h3{
+    color: #fff;
+}
+#logo1{
+    width: 80px;
+    position: absolute;
+    top:30px;
+    left: 30px;
+}
+h3 img{
+    width: 60px;
+    margin: 10px;
+    position: relative;
+    top: 20px;
+}
+li{
+    list-style: none;
+    margin: 8px;
+    border-radius: 5px;
+    background-color: #db0909;
+    color: #fff;
+    width: 200px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+}
+ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+    color: #fff;
+}
+#avatar{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+}
