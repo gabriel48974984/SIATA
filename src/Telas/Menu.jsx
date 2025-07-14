@@ -1,12 +1,14 @@
 import './Menu.css'
 import logo from '../assets/logo-1001.png'
+import { useState } from 'react'
 export default function Menu() {
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
   return (
     <div>
       <img src={logo} alt="" id='logo1' />
       <img src={logo} alt="" id='avatar' />
       <h2>SIATA</h2>
-      <h3>Sistema de Integração ATA</h3>
+      <h3>Seja bem vindo, {user.displayName}! ao Sistema de Integração ATA</h3>
       <section>
         <h2>Menu</h2>
         <ul>

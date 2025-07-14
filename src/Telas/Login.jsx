@@ -14,7 +14,8 @@ export default function Login() {
     const auth = getAuth(app)
     try {
       const result = await signInWithPopup(auth, provider)
-      console.log('Usuário:', result.user)
+      console.log('Usuário:', result)
+      sessionStorage.setItem('user', JSON.stringify(result.user))
       navigate('/Menu')
     } catch (error) {
       alert('Erro ao autenticar com Google: ' + error.message)
