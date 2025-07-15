@@ -60,11 +60,46 @@ a{
     color: #fff;
 }
 #avatar{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     position: absolute;
     top: 30px;
     right: 30px;
     border-radius: 50%;
     background-color: #fff;
+    cursor: pointer;
+}
+.menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab-menu {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  border-radius: 50%;
+  z-index: 1000;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fab-menu button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  color: #333;
+  background-color: azure;
+  margin: 8px 13px 5px 5px;
+}
+
+.fab-menu button:hover {
+  background-color: #f0f0f0;
 }
