@@ -93,7 +93,7 @@ export default function CadastroFuncionario() {
       //const docRef = doc(collection(db, 'FUNCIONARIOS'), form.cpf);
       // const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS'), form.cpf);
       //await setDoc(docRef, { ...form, foto: user.photoURL});
-      const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS', 'REGISTROS'), form.cpf);
+      const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS', 'CADASTROS'), form.cpf);
       await setDoc(docRef, { ...form, foto: user.photoURL });
 
       alert('Funcionário cadastrado com sucesso!');
