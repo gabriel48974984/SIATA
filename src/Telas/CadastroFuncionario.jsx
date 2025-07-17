@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { db, storage } from '../FirebaseConfig';
+import { db } from '../FirebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 function isValidCPF(cpf) {
   cpf = cpf.replace(/[\D]/g, '');
@@ -19,14 +18,15 @@ function isValidCPF(cpf) {
 }
 
 export default function CadastroFuncionario() {
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
   const [form, setForm] = useState({
-    nome: '', idade: '', telefone: '', sexo: '', email: '', nascimento: '',
+    nome: '', idade: '', telefone: '', sexo: '', email: user.email, nascimento: '',
     etnia: '', cpf: '', pcd: '', estadoCivil: '', habilitacao: '', escolaridade: '',
     cep: '', endereco: '', numero: '', complemento: '', cidade: '', bairro: '', estado: '',
     unidade: '', setor: '', matricula: '', cargo: '', status: '', admissao: '', demissao: '', turno: '',
     adm: false
   });
-  const [foto, setFoto] = useState(null);
+  const [foto, setFoto] = useState(user.photoURL);
   const [erros, setErros] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -84,14 +84,18 @@ export default function CadastroFuncionario() {
       return;
     }
     try {
-      let fotoURL = '';
-      if (foto) {
-        const storageRef = ref(storage, `fotos/${form.cpf}.jpg`);
-        await uploadBytes(storageRef, foto);
-        fotoURL = await getDownloadURL(storageRef);
-      }
-      const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS', 'LISTA'), form.cpf);
-      await setDoc(docRef, { ...form, foto: fotoURL });
+      // let fotoURL = '';
+      // if (foto) {
+      //   const storageRef = ref(storage, `fotos/${form.cpf}.jpg`);
+      //   await uploadBytes(storageRef, foto);
+      //   fotoURL = await getDownloadURL(storageRef);
+      // }
+      //const docRef = doc(collection(db, 'FUNCIONARIOS'), form.cpf);
+      // const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS'), form.cpf);
+      //await setDoc(docRef, { ...form, foto: user.photoURL});
+      const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS', 'REGISTROS'), form.cpf);
+      await setDoc(docRef, { ...form, foto: user.photoURL });
+
       alert('Funcionário cadastrado com sucesso!');
       setForm({
         nome: '', idade: '', telefone: '', sexo: '', email: '', nascimento: '',
@@ -125,19 +129,19 @@ export default function CadastroFuncionario() {
         </label> */}
         <h1>Informações Pessoais</h1>
 
-          <div style={styles.pessoais}>
+        <div style={styles.pessoais}>
           <label style={styles.label}>Nome:
             <input style={styles.input} type="text" name="nome" value={form.nome} onChange={handleChange} />
           </label>
-        {/* <div className='pessoais'> */}
+          {/* <div className='pessoais'> */}
 
           <label style={styles.label}>CPF:
             <input style={styles.input} type="text" name="cpf" value={form.cpf} onChange={handleChange} />
           </label>
           {/* </div> */}
-          <label style={styles.label}>E-mail:
+          {/* <label style={styles.label}>E-mail:
             <input style={styles.input} type="email" name="email" value={form.email} onChange={handleChange} />
-          </label>
+          </label> */}
 
           <label style={styles.label}>Telefone:
             <input style={styles.input} type="text" name="telefone" value={form.telefone} onChange={handleChange} />
@@ -266,11 +270,11 @@ export default function CadastroFuncionario() {
 }
 
 const styles = {
-  form:{
-    margin:0,
+  form: {
+    margin: 0,
     padding: 0,
     backgroundColor: '#f9f9f9',
-    height:'auto',
+    height: 'auto',
     display: 'flex',
   },
   pessoais: {
@@ -299,7 +303,7 @@ const styles = {
     maxWidth: '1200px',
     margin: '50px auto',
     padding: '30px',
-    
+
     fontFamily: 'Arial, sans-serif'
   },
   title: {
@@ -308,7 +312,7 @@ const styles = {
     fontSize: '24px',
     color: '#333'
   },
-  
+
   form: (isMobile) => ({
     display: 'grid',
     gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
