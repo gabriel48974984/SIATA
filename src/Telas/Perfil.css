@@ -1,0 +1,33 @@
+.perfil-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: rgb(101, 101, 101);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+}
+.perfil-info img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.perfil-info h2 {
+    margin: 2px;
+}
+.perfil-info h3 {
+    margin: 2px;
+}   
+.perfil-info p {
+    margin: 2px;
+} 
+.perfil-form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+}  

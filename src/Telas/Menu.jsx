@@ -7,6 +7,9 @@ import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 export default function Menu() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
   const [fabOpen, setFabOpen] = useState(false)
+  const abrirPerfil = () => {
+    window.location.href = '/Perfil'
+  }
   const handleLogout = () => {
     const auth = getAuth()
     signOut(auth).then(() => {
@@ -16,13 +19,16 @@ export default function Menu() {
       console.error('Erro ao sair:', error)
     })
   }
+  const abrirCadastroFuncionario = () => {
+    window.location.href = '/CadastroFuncionario'
+  }
   return (
     <div className='menu'>
       <img src={logo} alt="" id='logo1' />
       <img src={user.photoURL} alt="avatar" id='avatar' onClick={() => setFabOpen(!fabOpen)} />
       {fabOpen && (
         <div className='fab-menu'>
-          <button onClick={() => alert('Editar perfil em breve')}>
+          <button onClick={abrirPerfil}>
             <FontAwesomeIcon icon={faUser} />
           </button>
           <button onClick={handleLogout}>
@@ -37,6 +43,7 @@ export default function Menu() {
         <ul>
           <li><a href="#">DP</a></li>
           <li><a href="#">RH</a></li>
+          <li onClick={abrirCadastroFuncionario}><a href="#">Cadastrar funcionário</a></li>
           <li><a href="#">ADM</a></li>
           <li><a href="#">Perfil</a></li>
           <li><a href="#" onClick={handleLogout}>Sair</a></li>
