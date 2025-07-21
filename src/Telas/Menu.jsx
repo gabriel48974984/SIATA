@@ -10,6 +10,10 @@ export default function Menu() {
   const abrirPerfil = () => {
     window.location.href = '/Perfil'
   }
+  const listarRH = () => {
+    window.location.href = '/ListaFuncionarios'
+  }
+
   const handleLogout = () => {
     const auth = getAuth()
     signOut(auth).then(() => {
@@ -42,10 +46,10 @@ export default function Menu() {
         <h2>Menu</h2>
         <ul>
           <li><a href="#">DP</a></li>
-          <li><a href="#">RH</a></li>
+          <li onClick={listarRH}><a href="#">RH</a></li>
           <li onClick={abrirCadastroFuncionario}><a href="#">Cadastrar funcionário</a></li>
-          <li><a href="#">ADM</a></li>
-          <li><a href="#">Perfil</a></li>
+          {/* <li><a href="#">ADM</a></li> */}
+          <li onClick={abrirPerfil}><a href="#">Perfil</a></li>
           <li><a href="#" onClick={handleLogout}>Sair</a></li>
         </ul>
       </section>

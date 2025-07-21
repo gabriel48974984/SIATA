@@ -3,11 +3,13 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Menu from "./Telas/Menu";
 import Login from "./Telas/Login";
 import Home from "./Telas/Home";
-import Perfil from './Telas/Perfil';
+import Perfil from './Telas/PerfilFuncionario';
 import CadastroFuncionario from './Telas/CadastroFuncionario';
+import ListaFuncionarios from './Telas/ListaFuncionarios';
+import EditarFuncionario from './Telas/EditarFuncionario';
 export default function App() {
-  return (
-       <BrowserRouter>
+    return (
+        <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />}>
                     <Route index element={<Login />} />
@@ -15,9 +17,11 @@ export default function App() {
                     <Route path="Login" element={<Login />} />
                     <Route path="Perfil" element={<Perfil />} />
                     <Route path="CadastroFuncionario" element={<CadastroFuncionario />} />
+                    <Route path="ListaFuncionarios" element={<ListaFuncionarios />} />
+                    <Route path="editar/:email" element={<EditarFuncionario />} />
                     <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
                 </Route>
             </Routes>
         </BrowserRouter>
-  )
+    )
 }

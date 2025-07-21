@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../FirebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
-
+import './CadastroFuncionario.css';
 function isValidCPF(cpf) {
   cpf = cpf.replace(/[\D]/g, '');
   if (cpf.length !== 11 || /^([0-9])\1+$/.test(cpf)) return false;
@@ -181,14 +181,15 @@ export default function CadastroFuncionario() {
           </label>
 
         </div>
-        <div className='pessoais'>
-          <h1>Informações Acadêmicas</h1>
+        <h1>Informações Acadêmicas</h1>
+        <div style={styles.pessoais}>
 
           <label style={styles.label}>Escolaridade:
             <input style={styles.input} type="text" name="escolaridade" value={form.escolaridade} onChange={handleChange} />
           </label>
-
-          <h1>Informações de Contato</h1>
+        </div>
+        <h1>Informações de Contato</h1>
+        <div style={styles.pessoais}>
 
           <label style={styles.label}>CEP:
             <input style={styles.input} type="text" name="cep" value={form.cep} onChange={handleChange} />
@@ -218,9 +219,9 @@ export default function CadastroFuncionario() {
             <input style={styles.input} type="text" name="estado" value={form.estado} onChange={handleChange} />
           </label>
         </div>
-        <div className='pessoais'>
-          <h1>Informações Profissionais</h1>
 
+        <h1>Informações Profissionais</h1>
+        <div style={styles.pessoais}>
           <label style={styles.label}>Unidade:
             <input style={styles.input} type="text" name="unidade" value={form.unidade} onChange={handleChange} />
           </label>
@@ -252,17 +253,17 @@ export default function CadastroFuncionario() {
           <label style={styles.label}>Turno:
             <input style={styles.input} type="text" name="turno" value={form.turno} onChange={handleChange} />
           </label>
-
-          <label style={styles.checkboxLabel}> Administrador:
-            <input
-              type="checkbox"
-              name="adm"
-              checked={form.adm}
-              onChange={handleChange}
-              style={{ marginRight: '10px' }}
-            />
-          </label>
         </div>
+        <label style={styles.checkboxLabel}> Administrador:
+          <input
+            type="checkbox"
+            name="adm"
+            checked={form.adm}
+            onChange={handleChange}
+            style={{ marginRight: '10px' }}
+          />
+        </label>
+
         <button style={styles.button} type="submit">Cadastrar</button>
       </form>
     </div>
@@ -309,21 +310,21 @@ const styles = {
   title: {
     textAlign: 'center',
     marginBottom: '30px',
-    fontSize: '24px',
-    color: '#333'
+    fontSize: '44px',
+    color: '#fff'
   },
 
-  form: (isMobile) => ({
-    display: 'grid',
-    gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-    gap: '20px',
-    background: '#f9f9f9',
-    padding: '20px',
-    borderRadius: '20px',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
+  // form: (isMobile) => ({
+  //   display: 'grid',
+  //   gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+  //   gap: '20px',
+  //   background: '#f9f9f9',
+  //   padding: '20px',
+  //   borderRadius: '20px',
+  //   width: '100%',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // }),
   label: {
     display: 'flex',
     flexDirection: 'column',
