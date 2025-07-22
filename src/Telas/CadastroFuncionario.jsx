@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+  import { useState, useEffect } from 'react';
 import { db } from '../FirebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import './CadastroFuncionario.css';
