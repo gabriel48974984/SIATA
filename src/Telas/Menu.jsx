@@ -3,6 +3,7 @@ import logo from '../assets/logo-1001.png'
 import { useState } from 'react'
 import { getAuth, signOut } from 'firebase/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import logoSiata from '../assets/logo-siata.png'
 import { faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 export default function Menu() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
@@ -12,6 +13,9 @@ export default function Menu() {
   }
   const listarRH = () => {
     window.location.href = '/ListaFuncionarios'
+  }
+  const abrirMenuDP = () => {
+    window.location.href = '/MenuDP'
   }
 
   const handleLogout = () => {
@@ -28,7 +32,14 @@ export default function Menu() {
   }
   return (
     <div className='menu'>
-      <img src={logo} alt="" id='logo1' />
+      <div style={{ position: 'absolute', top: '30px', left: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <img src={logoSiata} alt="" style={{ width: '50px', margin: 0 }} />
+                <h2 style={{ margin: 0, fontWeight: 'bold', fontStretch: 'ultra-expanded', marginLeft: '5px' }}>I A T A</h2>
+              </div>
+              <h4 style={{ position: 'relative', margin: 0, fontSize: '10px', top: '-22px', left: '26px', color: '#fff' }}>Sistema de Integração ATA</h4>
+            </div>
+      
       <img src={user.photoURL} alt="avatar" id='avatar' onClick={() => setFabOpen(!fabOpen)} />
       {fabOpen && (
         <div className='fab-menu'>
@@ -40,12 +51,11 @@ export default function Menu() {
           </button>
         </div>
       )}
-      <h2>SIATA</h2>
-      <h3>Seja bem vindo, {user.displayName}! ao Sistema de Integração ATA</h3>
+      <h2>Menu</h2>
+      <h3 style={{color: '#fff', fontSize: '18px',marginBottom:'20px', position: 'relative', backgroundColor:'#33333300'}}>Seja bem vindo, {user.displayName}! ao Sistema de Integração ATA</h3>
       <section>
-        <h2>Menu</h2>
-        <ul>
-          <li><a href="#">DP</a></li>
+        <ul style={{marginTop: '20px'}}>
+          <li onClick={abrirMenuDP}><a href="#">DP</a></li>
           <li onClick={listarRH}><a href="#">RH</a></li>
           <li onClick={abrirCadastroFuncionario}><a href="#">Cadastrar funcionário</a></li>
           {/* <li><a href="#">ADM</a></li> */}
@@ -53,7 +63,7 @@ export default function Menu() {
           <li><a href="#" onClick={handleLogout}>Sair</a></li>
         </ul>
       </section>
-      <h3>Um sistema de <img src={logo} alt="" /> Utilidades</h3>
+      <h3>Um sistema de <img src={logo} alt="" style={{ marginTop: '-30px' }} /> Utilidades</h3>
     </div>
   )
 }
