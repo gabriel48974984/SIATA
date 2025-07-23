@@ -19,9 +19,11 @@ function isValidCPF(cpf) {
 
 export default function CadastroFuncionario() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
+  const [senhaMatch, setSenhaMatch] = useState(null); // null, true, false
   const [form, setForm] = useState({
     nome: '', idade: '', telefone: '', sexo: '', email: user.email, nascimento: '',
-    etnia: '', cpf: '', pcd: '', estadoCivil: '', habilitacao: '', escolaridade: '',
+    etnia: '', cpf: '', pcd: '', estadoCivil: '', habilitacao: '', tipoSanguineo: '', senha: '', repitaSenha: '',
+    especializacao: '', previsaoTermino: '', escolaridade: '',
     cep: '', endereco: '', numero: '', complemento: '', cidade: '', bairro: '', estado: '',
     unidade: '', setor: '', matricula: '', cargo: '', status: '', admissao: '', demissao: '', turno: '',
     adm: false
@@ -59,6 +61,18 @@ export default function CadastroFuncionario() {
     fetchAddress();
   }, [form.cep]);
 
+  // const validateFields = () => {
+  //   const newErrors = {};
+  //   if (!form.nome) newErrors.nome = 'Nome é obrigatório';
+  //   if (!form.email) newErrors.email = 'E-mail é obrigatório';
+  //   if (!form.cpf || !isValidCPF(form.cpf)) newErrors.cpf = 'CPF inválido';
+  //   if (!form.telefone) newErrors.telefone = 'Telefone é obrigatório';
+  //   if (!form.sexo) newErrors.sexo = 'Sexo é obrigatório';
+  //   if (!form.nascimento) newErrors.nascimento = 'Data de nascimento é obrigatória';
+  //   if (!form.idade) newErrors.idade = 'Idade é obrigatória';
+  //   return newErrors;
+  // };
+
   const validateFields = () => {
     const newErrors = {};
     if (!form.nome) newErrors.nome = 'Nome é obrigatório';
@@ -68,8 +82,32 @@ export default function CadastroFuncionario() {
     if (!form.sexo) newErrors.sexo = 'Sexo é obrigatório';
     if (!form.nascimento) newErrors.nascimento = 'Data de nascimento é obrigatória';
     if (!form.idade) newErrors.idade = 'Idade é obrigatória';
+
+    if (!form.senha || form.senha.length < 6) newErrors.senha = 'Senha deve ter pelo menos 6 caracteres';
+    if (form.senha !== form.repitaSenha) {
+      newErrors.repitaSenha = 'As senhas não coincidem';
+      setSenhaMatch(false);
+    } else {
+      setSenhaMatch(true);
+    }
+
+    if (
+      ['Técnico', 'Superior', 'Pós-Graduação'].includes(form.escolaridade) &&
+      !form.especializacao
+    ) {
+      newErrors.especializacao = 'Informe a área de especialização';
+    }
+
+    if (
+      form.escolaridade.includes('Incompleto') &&
+      !form.previsaoTermino
+    ) {
+      newErrors.previsaoTermino = 'Informe a previsão de término';
+    }
+
     return newErrors;
   };
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -94,12 +132,18 @@ export default function CadastroFuncionario() {
       // const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS'), form.cpf);
       //await setDoc(docRef, { ...form, foto: user.photoURL});
       const docRef = doc(collection(db, 'SIATA', 'FUNCIONARIOS', 'CADASTROS'), form.email);
-      await setDoc(docRef, { ...form, foto: user.photoURL });
+      await setDoc(docRef, {
+        ...form,
+        foto: user.photoURL,
+        especializacao: form.especializacao,
+        previsaoTermino: form.previsaoTermino
+      });
 
       alert('Funcionário cadastrado com sucesso!');
       setForm({
         nome: '', idade: '', telefone: '', sexo: '', email: '', nascimento: '',
-        etnia: '', cpf: '', pcd: '', estadoCivil: '', habilitacao: '', escolaridade: '',
+        etnia: '', cpf: '', pcd: '', estadoCivil: '', habilitacao: '', tipoSanguineo: '', senha: '', repitaSenha: '',
+        especializacao: '', previsaoTermino: '', escolaridade: '',
         cep: '', endereco: '', numero: '', complemento: '', cidade: '', bairro: '', estado: '',
         unidade: '', setor: '', matricula: '', cargo: '', status: '', admissao: '', demissao: '', turno: '',
         adm: false
@@ -164,20 +208,67 @@ export default function CadastroFuncionario() {
             <input style={styles.input} type="number" name="idade" value={form.idade} onChange={handleChange} />
           </label>
 
+
           <label style={styles.label}>Etnia:
-            <input style={styles.input} type="text" name="etnia" value={form.etnia} onChange={handleChange} />
+            <select style={styles.input} name="etnia" value={form.etnia} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Indígena">Indígena</option>
+              <option value="Branca">Branca</option>
+              <option value="Preta">Preta</option>
+              <option value="Parda">Parda</option>
+              <option value="Amarela">Amarela</option>
+              <option value="Outra">Outra</option>
+            </select>
+          </label>
+          
+          <label style={styles.label}>PCD:
+            <select style={styles.input} name="pcd" value={form.pcd} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
           </label>
 
-          <label style={styles.label}>PCD:
-            <input style={styles.input} type="text" name="pcd" value={form.pcd} onChange={handleChange} />
-          </label>
 
           <label style={styles.label}>Estado Civil:
-            <input style={styles.input} type="text" name="estadoCivil" value={form.estadoCivil} onChange={handleChange} />
+            <select style={styles.input} name="estadoCivil" value={form.estadoCivil} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Solteiro">Solteiro</option>
+              <option value="Casado">Casado</option>
+              <option value="Divorciado">Divorciado</option>
+              <option value="Viúvo">Viúvo</option>
+              <option value="União Estável">União Estável</option>
+            </select>
           </label>
 
           <label style={styles.label}>Habilitação:
-            <input style={styles.input} type="text" name="habilitacao" value={form.habilitacao} onChange={handleChange} />
+            <select style={styles.input} name="habilitacao" value={form.habilitacao} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Nenhuma">Nenhuma</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="AB">AB</option>
+              <option value="AC">AC</option>
+              <option value="AD">AD</option>
+              <option value="AE">AE</option>
+            </select>
+          </label>
+
+            <label style={styles.label}>Tipo Sanguíneo:
+            <select style={styles.input} name="tipoSanguineo" value={form.tipoSanguineo} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
           </label>
 
         </div>
@@ -185,8 +276,46 @@ export default function CadastroFuncionario() {
         <div style={styles.pessoais}>
 
           <label style={styles.label}>Escolaridade:
-            <input style={styles.input} type="text" name="escolaridade" value={form.escolaridade} onChange={handleChange} />
+            <select style={styles.input} name="escolaridade" value={form.escolaridade} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Ensino Fundamental Incompleto">Ensino Fundamental incompleto</option>
+              <option value="Ensino Fundamental">Ensino Fundamental</option>
+              <option value="Ensino Médio Incompleto">Ensino Médio incompleto</option>
+              <option value="Ensino Médio">Ensino Médio</option>
+              <option value="Técnico Incompleto">Técnico incompleto</option>
+              <option value="Técnico">Técnico</option>
+              <option value="Superior Incompleto">Superior incompleto</option>
+              <option value="Ensino Superior">Ensino Superior</option>
+              <option value="Pós-Graduação Incompleto">Pós-Graduação incompleto</option>
+              <option value="Pós-Graduação">Pós-Graduação</option>
+            </select>
           </label>
+
+          {['Técnico', 'Superior', 'Pós-Graduação', 'Técnico Incompleto', 'Superior Incompleto', 'Pós-Graduação Incompleto'].includes(form.escolaridade) && (
+            <label style={styles.label}>Área de Especialização:
+              <input
+                style={styles.input}
+                type="text"
+                name="especializacao"
+                value={form.especializacao}
+                onChange={handleChange}
+              />
+            </label>
+          )}
+
+          {form.escolaridade.includes('Incompleto') && (
+            <label style={styles.label}>Previsão de Término:
+              <input
+                style={styles.input}
+                type="date"
+                name="previsaoTermino"
+                value={form.previsaoTermino}
+                onChange={handleChange}
+              />
+            </label>
+          )}
+
+
         </div>
         <h1>Informações de Contato</h1>
         <div style={styles.pessoais}>
@@ -218,6 +347,22 @@ export default function CadastroFuncionario() {
           <label style={styles.label}>Estado:
             <input style={styles.input} type="text" name="estado" value={form.estado} onChange={handleChange} />
           </label>
+
+          <label style={styles.label}>Senha:
+            <input type="password"
+              name="senha"
+              value={form.senha}
+              onChange={handleChange}
+              style={styles.senhaInput(senhaMatch)} />
+          </label>
+
+          <label style={styles.label}>Repita Senha:
+            <input type="password"
+              name="repitaSenha"
+              value={form.repitaSenha}
+              onChange={handleChange}
+              style={styles.senhaInput(senhaMatch)} />
+          </label>
         </div>
 
         <h1>Informações Profissionais</h1>
@@ -238,8 +383,15 @@ export default function CadastroFuncionario() {
             <input style={styles.input} type="text" name="cargo" value={form.cargo} onChange={handleChange} />
           </label>
 
+
           <label style={styles.label}>Status:
-            <input style={styles.input} type="text" name="status" value={form.status} onChange={handleChange} />
+            <select style={styles.input} name="status" value={form.status} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
+              <option value="Afastado">Afastado</option>
+              <option value="Licença">Licença</option>
+            </select>
           </label>
 
           <label style={styles.label}>Admissão:
@@ -251,7 +403,13 @@ export default function CadastroFuncionario() {
           </label>
 
           <label style={styles.label}>Turno:
-            <input style={styles.input} type="text" name="turno" value={form.turno} onChange={handleChange} />
+            <select style={styles.input} name="turno" value={form.turno} onChange={handleChange}>
+              <option value="">Selecione</option>
+              <option value="Manhã">Manhã</option>
+              <option value="Tarde">Tarde</option>
+              <option value="Noite">Noite</option>
+              <option value="Integral">Integral</option>
+            </select>
           </label>
         </div>
         <label style={styles.checkboxLabel}> Administrador:
@@ -364,6 +522,16 @@ const styles = {
     padding: '10px',
     borderRadius: '5px',
     fontSize: '14px'
-  }
+  },
+  senhaInput: (match) => ({
+    marginTop: '6px',
+    padding: '10px',
+    border: `2px solid ${match === null ? '#ccc' : match ? 'green' : 'red'}`,
+    borderRadius: '5px',
+    fontSize: '14px',
+    width: '100%',
+    transition: 'border-color 0.3s ease',
+  })
+
 };
 // ...existing code...
