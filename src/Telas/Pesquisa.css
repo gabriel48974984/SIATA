@@ -174,3 +174,17 @@
 .modal-conteudo button:last-child {
   background-color: #dc3545;
 }
+.ordenacao-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.botao-toggle {
+  padding: 6px 12px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

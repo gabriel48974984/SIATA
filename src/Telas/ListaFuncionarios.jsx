@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { db } from '../FirebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { FaWhatsapp, FaPhone, FaTelegram, FaBackward } from 'react-icons/fa';
 
 export default function ListaFuncionarios() {
   const [funcionarios, setFuncionarios] = useState([]);
@@ -24,6 +25,9 @@ export default function ListaFuncionarios() {
 
   return (
     <div style={styles.container}>
+       <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+                      <FaBackward style={styles.iconVoltar} />
+                  </button>
       <h2 style={styles.title}>Lista de Funcionários</h2>
       <div style={styles.lista}>
         {funcionarios.map(func => (
@@ -51,6 +55,20 @@ export default function ListaFuncionarios() {
 }
 
 const styles = {
+   voltar: {
+        width: '50px',
+        height: '50px',
+        position: 'fixed',
+        top: '20px', 
+        left: '20px',
+        borderRadius: '25px',
+    },
+    iconVoltar: {
+        fontSize: '44px',
+        width: '100%',
+        height: '100%',
+        color: '#333',
+    },
   container: {
     padding: '30px',
     fontFamily: 'Arial, sans-serif',

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../FirebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { FaWhatsapp, FaPhone, FaTelegram, FaBackward } from 'react-icons/fa';
 
 export default function PerfilFuncionario() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
@@ -46,10 +47,21 @@ export default function PerfilFuncionario() {
   };
 
   if (loading) return <p>Carregando perfil...</p>;
-  if (!dados) return <p>Perfil não encontrado.</p>;
+  if (!dados) return (
+    <div style={styles.container}>
+    <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+        <FaBackward style={styles.iconVoltar} />
+      </button>
+  <p>Perfil não encontrado.</p>
+  </div>
+);
 
   return (
     <div style={styles.container}>
+      <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+        <FaBackward style={styles.iconVoltar} />
+      </button>
+
       <h2 style={styles.title}>Perfil do Funcionário</h2>
 
       <div style={styles.card}>
@@ -87,6 +99,7 @@ export default function PerfilFuncionario() {
           </div>
         )}
       </div>
+      
     </div>
   );
 }
@@ -163,5 +176,19 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer'
-  }
+  },
+  voltar: {
+    width: '50px',
+    height: '50px',
+    position: 'fixed',
+    top: '20px',
+    left: '20px',
+    borderRadius: '25px',
+  },
+  iconVoltar: {
+    fontSize: '44px',
+    width: '100%',
+    height: '100%',
+    color: '#333',
+  },
 };

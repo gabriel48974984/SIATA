@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { db } from '../FirebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import './CadastroFuncionario.css';
+import { FaWhatsapp, FaPhone, FaTelegram, FaBackward } from 'react-icons/fa';
+
 function isValidCPF(cpf) {
   cpf = cpf.replace(/[\D]/g, '');
   if (cpf.length !== 11 || /^([0-9])\1+$/.test(cpf)) return false;
@@ -158,6 +160,11 @@ export default function CadastroFuncionario() {
 
   return (
     <div style={styles.container}>
+
+      <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+        <FaBackward style={styles.iconVoltar} />
+      </button>
+
       <h2 style={styles.title}>Cadastro de Funcionário</h2>
       <form onSubmit={handleSubmit} style={styles.divisoes}>
         {Object.keys(erros).length > 0 && (
@@ -220,7 +227,7 @@ export default function CadastroFuncionario() {
               <option value="Outra">Outra</option>
             </select>
           </label>
-          
+
           <label style={styles.label}>PCD:
             <select style={styles.input} name="pcd" value={form.pcd} onChange={handleChange}>
               <option value="">Selecione</option>
@@ -257,7 +264,7 @@ export default function CadastroFuncionario() {
             </select>
           </label>
 
-            <label style={styles.label}>Tipo Sanguíneo:
+          <label style={styles.label}>Tipo Sanguíneo:
             <select style={styles.input} name="tipoSanguineo" value={form.tipoSanguineo} onChange={handleChange}>
               <option value="">Selecione</option>
               <option value="A+">A+</option>
@@ -429,6 +436,20 @@ export default function CadastroFuncionario() {
 }
 
 const styles = {
+  voltar: {
+        width: '50px',
+        height: '50px',
+        position: 'fixed',
+        top: '20px', 
+        left: '20px',
+        borderRadius: '25px',
+    },
+    iconVoltar: {
+        fontSize: '44px',
+        width: '100%',
+        height: '100%',
+        color: '#333',
+    },
   form: {
     margin: 0,
     padding: 0,
