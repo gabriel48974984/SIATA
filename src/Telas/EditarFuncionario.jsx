@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { db } from '../FirebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { FaWhatsapp, FaPhone, FaTelegram, FaBackward } from 'react-icons/fa';
 
 export default function EditarFuncionario() {
   const { email } = useParams();
@@ -50,6 +51,9 @@ export default function EditarFuncionario() {
 
   return (
     <div style={styles.container}>
+      <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+        <FaBackward style={styles.iconVoltar} />
+      </button>
       <h2 style={styles.title}>Editar Funcionário</h2>
       <div style={styles.form}>
         {Object.entries(form).map(([campo, valor]) =>
@@ -90,7 +94,7 @@ const styles = {
     justifyContent: 'space-between',
     gap: '15px',
     padding: '20px',
-    borderRadius  : '10px',
+    borderRadius: '10px',
     boxShadow: '8px 8px 10px rgba(0,0,0,0.1)',
     backgroundColor: '#f9f9f9',
   },
@@ -105,7 +109,7 @@ const styles = {
     fontSize: '14px',
     borderRadius: '5px',
     border: '1px solid #ccc',
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
   },
   botao: {
     with: '800px',
@@ -116,5 +120,20 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer'
-  }
+  },
+  voltar: {
+    width: '50px',
+    height: '50px',
+    position: 'fixed',
+    top: '20px',
+    left: '20px',
+    borderRadius: '25px',
+  },
+  iconVoltar: {
+    fontSize: '44px',
+    width: '100%',
+    height: '100%',
+    color: '#333',
+  },
+
 };

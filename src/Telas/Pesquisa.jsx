@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Pesquisa.css';
 import { db } from '../FirebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
+import { FaWhatsapp, FaPhone, FaTelegram, FaBackward } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export default function Pesquisa() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,6 +12,8 @@ export default function Pesquisa() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [modalFuncionario, setModalFuncionario] = useState(null);
   const [ordenacao, setOrdenacao] = useState('');
+  const [ordemCrescente, setOrdemCrescente] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFuncionarios = async () => {
@@ -25,7 +29,8 @@ export default function Pesquisa() {
             setor: data.setor || '',
             unidade: data.unidade || '',
             status: data.status || 'Indefinido',
-            foto: data.foto || '', // deve conter a URL da foto
+            foto: data.foto || '',
+            admissao: data.admissao || data.dataAdmissao || '', // Usado para ordenação
             tempo: calcularTempoAdmissao(data.admissao || data.dataAdmissao),
           };
         });
@@ -66,6 +71,18 @@ export default function Pesquisa() {
     return nomeMatch;
   });
 
+  // Ordenação
+  const funcionariosOrdenados = [...funcionariosFiltrados].sort((a, b) => {
+    const asc = ordemCrescente ? 1 : -1;
+    if (ordenacao === 'nome') {
+      return a.nome.localeCompare(b.nome) * asc;
+    }
+    if (ordenacao === 'admissao') {
+      return (new Date(a.admissao) - new Date(b.admissao)) * asc;
+    }
+    return 0;
+  });
+
   function formatarFiltro(filtro) {
     switch (filtro) {
       case 'Ativo': return 'Ativos';
@@ -81,6 +98,10 @@ export default function Pesquisa() {
 
   return (
     <div className="container-pesquisa">
+      <button style={styles.voltar} onClick={() => window.location.href = '/Menu'}>
+        <FaBackward style={styles.iconVoltar} />
+      </button>
+
       <input
         type="text"
         className="barra-pesquisa"
@@ -112,23 +133,29 @@ export default function Pesquisa() {
           value={valorFiltro}
           onChange={(e) => setValorFiltro(e.target.value)}
         />
-        
       )}
-       <select
+
+      <div className="ordenacao-container">
+        <select
           className="campo-filtro"
           value={ordenacao}
           onChange={(e) => setOrdenacao(e.target.value)}
         >
           <option value="">Ordenar por</option>
-          <option value="Crescente (A-Z)">Crescente (A-Z)</option>
-          <option value="Decrescente (Z-A)">Decrescente (Z-A)</option>
-          <option value="maisAntigo">Mais antigo</option>
-          <option value="maisRecente">Mais recente</option>
+          <option value="nome">Nome</option>
+          <option value="admissao">Data de Admissão</option>
         </select>
 
+        {ordenacao && (
+          <button className="botao-toggle" onClick={() => setOrdemCrescente(!ordemCrescente)}>
+            {ordemCrescente ? '▲ Crescente' : '▼ Decrescente'}
+          </button>
+        )}
+      </div>
+
       <div className="grid-funcionarios">
-        {funcionariosFiltrados.length > 0 ? (
-          funcionariosFiltrados.map((func) => (
+        {funcionariosOrdenados.length > 0 ? (
+          funcionariosOrdenados.map((func) => (
             <div
               key={func.id}
               className="card-funcionario"
@@ -153,7 +180,7 @@ export default function Pesquisa() {
             <p><strong>Cargo:</strong> {modalFuncionario.cargo}</p>
             <p><strong>Setor:</strong> {modalFuncionario.setor}</p>
             <p><strong>Unidade:</strong> {modalFuncionario.unidade}</p>
-            <button className="botao-editar" onClick={() => alert("Editar funcionalidade aqui")}>
+            <button className="botao-editar" onClick={() => navigate(`/editar/${encodeURIComponent(modalFuncionario.email)}`)}>
               Editar
             </button>
           </div>
@@ -162,3 +189,20 @@ export default function Pesquisa() {
     </div>
   );
 }
+
+const styles = {
+  voltar: {
+    width: '50px',
+    height: '50px',
+    position: 'fixed',
+    top: '20px',
+    left: '20px',
+    borderRadius: '25px',
+  },
+  iconVoltar: {
+    fontSize: '44px',
+    width: '100%',
+    height: '100%',
+    color: '#333',
+  },
+};

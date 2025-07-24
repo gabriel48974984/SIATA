@@ -1,4 +1,3 @@
-
 import './Menu.css'
 import logo from '../assets/logo-1001.png'
 import logoSiata from '../assets/logo-siata.png'
@@ -6,11 +5,12 @@ import { useState } from 'react'
 import { getAuth, signOut } from 'firebase/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faRightFromBracket, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')))
   const [fabOpen, setFabOpen] = useState(false)
-
+   const navigate = useNavigate();
   const abrirPerfil = () => {
     window.location.href = '/Perfil'
   }
